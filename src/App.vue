@@ -250,7 +250,7 @@ option {
 } */
 
 #genres {
-    display: block;
+    /* display: block; */
     padding-left: 20%;
     margin-left: auto;
     margin-right: auto;

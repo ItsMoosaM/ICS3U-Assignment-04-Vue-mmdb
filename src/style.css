@@ -100,6 +100,7 @@ hr{
 #tagline {
     text-align: center;
     font-size: 140%;
+    padding-top: 1%;
     padding-bottom: 1%;
 }
 
@@ -207,6 +208,7 @@ option {
     min-height: 100px;
     width: 90%;
     height: 90%;
+    padding: 2% 10% 2% 10%;
 }
 
 #overview {
@@ -227,15 +229,17 @@ option {
 
 #genres {
     display: block;
-    padding-left: 20%;
-    margin-left: auto;
+    padding-left: 0px;
+    margin-left: 10%;
     margin-right: auto;
     /* background-color: #222E2C; */
 }
 
 #genres li{
+    display: list-item;
     margin: 5% 0px;
-    font-size: 150%;
+    font-size: 160%;
+    list-style-type: square;
 }
 
 .otherInfo {
@@ -249,15 +253,16 @@ option {
     font-size: 140%;
 }
 
-/* #releaseDate{
-    background-color: #222E2C;
+#releaseDate{
+    font-size: 160%;
 }
 #productionCompany{
-    background-color: #222E2C;
+    font-size: 160%;
+    text-decoration: underline;
 }
-#releaseDate{
-    background-color: #222E2C;
-} */
+#movieCollection{
+    font-size: 160%;
+}
 
 #backdropImage {
     display: block;
@@ -279,19 +284,6 @@ option {
     padding-top: 5%;
     font-size: 120%;
     text-align: center;
-}
-
-#footer {
-    display: block;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    padding-bottom: 5px;
-    clear: both;
 }
 
 #left {

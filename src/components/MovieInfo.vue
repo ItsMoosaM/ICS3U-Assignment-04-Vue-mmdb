@@ -7,7 +7,6 @@ import axios from 'axios'
 let placeholderRemoved = false;
 
 const movieSelected = ref('')
-let genreTitle = ref('')
 const movie = ref(null)
 
 const getData = async (url, params) => {
@@ -45,7 +44,6 @@ const GetMovieData = async (selectedMovie) => {
 
     console.log(movie.value)
 
-    const genresElement = document.getElementById('genres')
 
     //Removes Place Holder Text
     if (placeholderRemoved == false) {
@@ -55,19 +53,6 @@ const GetMovieData = async (selectedMovie) => {
     } else {
         //Do Nothing
     }
-    
-    genreTitle = "Genres";
-    
-    genresElement.innerHTML = '';
-    
-    let genresInfo = movie.value.genres.forEach(element => {
-        let genresNames = element.name;
-        console.log(genresNames)
-        genresElement.innerHTML += `<li> ${genresNames} </li>`
-    });
-    
-    console.log(genresInfo)
-
 }
 </script>
 
@@ -100,6 +85,7 @@ const GetMovieData = async (selectedMovie) => {
                 </select>
             </div>
             <br>
+            <br>
             <button id="getInfo" @click="getSelected()">Get Info</button>
 
             <br>
@@ -110,30 +96,46 @@ const GetMovieData = async (selectedMovie) => {
         <div v-if="movie">
             <h1 id="movie_title" class="grid-col-span-full">{{ movie.title }}</h1>
             <h3 id="tagline" class="grid-col-span-full">{{ movie.tagline }}</h3>
+
             <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" id="poster" alt=""
                 class="grid-col-span-2">
-            <iframe :src="`https://www.youtube.com/embed/${movie.videos.results.filter((video) => video.type === 'Trailer').at(0).key}`" frameborder="0" id="trailer" class="grid-col-span-3"></iframe>
+            <iframe
+                :src="`https://www.youtube.com/embed/${movie.videos.results.filter((video) => video.type === 'Trailer').at(0).key}`"
+                frameborder="0" id="trailer" class="grid-col-span-3"></iframe>
             <br>
             <br>
             <hr class="grid-col-span-full">
             <h4 id="overview" class="grid-col-span-full">{{ movie.overview }}</h4>
             <hr class="grid-col-span-full">
             <div class="grid-col-span-2 otherInfo ">
-            <br>
+                <br>
                 <div id="genresContainer" class="grid-col-span-2">
-                    <h2 id="genreTitle">{{ genreTitle }}</h2>
+                    <h4 id="productionCompany" class="otherInfoNoGenre">Genres:</h4>
                     <br>
                     <ul id="genres">
+                        <li v-for="name in movie.genres">
+                            {{ name.name }}
+                        </li>
                     </ul>
                     <br>
                 </div>
                 <br>
+                <h4 id="productionCompany" class="otherInfoNoGenre">Production Companies:</h4>
+                <ul id="genres">
+                    <li v-for="productionName in movie.production_companies">
+                        {{ productionName.name }}
+                    </li>
+                </ul>
+                <br>
+                <h4 id="productionCompany" class="otherInfoNoGenre">Production Countries:</h4>
+                <ul id="genres">
+                    <li v-for="productionCountry in movie.production_countries">
+                        {{ productionCountry.name }}
+                    </li>
+                </ul>
+                <br>
                 <br>
                 <h4 id="releaseDate" class="otherInfoNoGenre">Release Date: {{ movie.release_date }}</h4>
-                <br>
-                <h4 id="productionCompany" class="otherInfoNoGenre">Production Company: {{
-                        movie.production_companies[0].name
-                }}</h4>
                 <br>
                 <h4 id="movieCollection" class="otherInfoNoGenre">Collection: {{ movie.belongs_to_collection.name }}
                 </h4>
@@ -145,6 +147,14 @@ const GetMovieData = async (selectedMovie) => {
                 <a :href="`${movie.homepage}`" id="movieWebsite" target="_blank">{{ movie.homepage }}</a>
             </div>
             <br>
+            <!-- <hr class="grid-col-span-full">
+            <h4 id="moreVids">More Videos</h4>
+            <ul>
+                <li v-for="item in movie.videos.results">
+                    {{ item.key }}
+                </li>
+            </ul> -->
+            <br>
             <br>
             <br>
             <br>
@@ -155,6 +165,7 @@ const GetMovieData = async (selectedMovie) => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+
 * {
     background-color: #0f0d06;
     box-sizing: border-box;
@@ -162,11 +173,11 @@ const GetMovieData = async (selectedMovie) => {
     display: grid;
     padding: 0%;
     margin: 0;
-    font-family: "Lilita One","Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-family: "Lilita One", "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
     margin: 0%;
 }
 
-hr{
+hr {
     border-color: #c2870c;
     border-width: 4px;
 }
@@ -180,9 +191,11 @@ hr{
 .grid-col-span-full {
     grid-column: span 5;
 }
+
 .grid-col-span-2 {
     grid-column: span 2;
 }
+
 .grid-col-span-3 {
     grid-column: span 3;
 }
@@ -210,6 +223,7 @@ hr{
     margin-left: auto;
     margin-right: auto;
 }
+
 #getInfo:hover {
     background-color: rgb(161, 115, 17);
     border: rgb(161, 115, 17);
@@ -218,6 +232,7 @@ hr{
     margin-right: auto;
     cursor: pointer;
 }
+
 #getInfo:active {
     background-color: rgb(255, 180, 18);
     border: rgb(255, 180, 18);
@@ -244,13 +259,17 @@ hr{
     from {
         box-shadow: 0px 0px 28px #c2870c;
     }
+
     to {
         box-shadow: 0px 0px 10px #c2870c;
     }
-}@keyframes glowEffectHover {
+}
+
+@keyframes glowEffectHover {
     from {
         box-shadow: 0px 0px 24px #ffbc2d;
     }
+
     to {
         box-shadow: 0px 0px 10px #ffbc2d;
     }
@@ -262,10 +281,12 @@ optgroup {
     color: #0f0d06;
     background-color: #c2870c;
 }
+
 option {
     background-color: #0f0d06;
     text-align: center;
 }
+
 #movies {
     display: block;
     margin: 1% auto;
@@ -288,7 +309,8 @@ option {
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
-#movies:hover{
+
+#movies:hover {
     border-color: #ffbc2d;
     color: #ffbc2d;
     animation-name: glowEffectHover;
@@ -362,18 +384,17 @@ option {
     background-color: #222E2C;
 } */
 
-#genres {
+/* #genres {
     display: block;
     padding-left: 20%;
     margin-left: auto;
     margin-right: auto;
-    /* background-color: #222E2C; */
 }
 
-#genres li{
+#genres li {
     margin: 5% 0px;
     font-size: 150%;
-}
+} */
 
 .otherInfo {
     display: block;
@@ -382,19 +403,10 @@ option {
     padding-left: 15%;
     /* background-color: #222E2C; */
 }
-.otherInfoNoGenre{
+
+.otherInfoNoGenre {
     font-size: 140%;
 }
-
-/* #releaseDate{
-    background-color: #222E2C;
-}
-#productionCompany{
-    background-color: #222E2C;
-}
-#releaseDate{
-    background-color: #222E2C;
-} */
 
 #backdropImage {
     display: block;
@@ -438,6 +450,7 @@ option {
     padding-left: 2%;
 
 }
+
 #right {
     text-align: right;
     justify-content: right;
